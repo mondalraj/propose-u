@@ -8,7 +8,7 @@
   "people": {
     "herName": "Love",
     "yourName": "Rajib",
-    "coupleName": "R & B"
+    "coupleName": "R & L"
   },
 
   "contact": {
@@ -55,8 +55,7 @@
       "enabled": true,
       "title": "Catch the hearts to unlock your letter",
       "targetHearts": 8,
-      "unlockText": "Letter unlocked! Opening… 💌",
-      "skipText": "Skip — just open it ✨"
+      "unlockText": "Letter unlocked! Opening… 💌"
     },
 
     "quiz": {

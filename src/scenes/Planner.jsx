@@ -3,7 +3,7 @@ import { AnimatePresence } from 'motion/react'
 import { data, t } from '../lib/data.js'
 import { useLoveMeter } from '../components/LoveMeter.jsx'
 import SurpriseWheel from '../components/SurpriseWheel.jsx'
-import { Chip, GhostButton, PrimaryButton, SkipButton } from '../components/ui.jsx'
+import { Chip, GhostButton, PrimaryButton } from '../components/ui.jsx'
 import { microBurst } from '../lib/confetti.js'
 
 /** S6 — Date planner: day chips + vibe chips + G4 Surprise Wheel. */
@@ -87,8 +87,6 @@ export default function Planner({ onNext }) {
         </PrimaryButton>
         <GhostButton onClick={onNext}>{t(cfg.skipLabel)}</GhostButton>
       </div>
-
-      <SkipButton onClick={onNext} />
     </div>
   )
 }

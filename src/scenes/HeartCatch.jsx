@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { data } from '../lib/data.js'
 import { useLoveMeter } from '../components/LoveMeter.jsx'
-import { SkipButton } from '../components/ui.jsx'
 import { prefersReducedMotion } from '../lib/confetti.js'
 import { useHeartsGame } from './useHeartsGame.js'
 
@@ -87,8 +86,6 @@ export default function HeartCatch({ onNext }) {
           </motion.div>
         )}
       </div>
-
-      <SkipButton onClick={finish} label={cfg.skipText || 'Skip ✨'} />
     </div>
   )
 }

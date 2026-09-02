@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { data, t } from '../lib/data.js'
 import { useLoveMeter } from '../components/LoveMeter.jsx'
-import { GhostButton, PrimaryButton, SkipButton } from '../components/ui.jsx'
+import { GhostButton, PrimaryButton } from '../components/ui.jsx'
 import { prefersReducedMotion } from '../lib/confetti.js'
 
 /** G3 — Scratch-to-reveal card. Drag to scratch; Reveal button for accessibility. */
@@ -155,8 +155,6 @@ export default function Scratch({ onNext }) {
           <PrimaryButton onClick={onNext}>My answer is waiting… →</PrimaryButton>
         )}
       </div>
-
-      <SkipButton onClick={onNext} />
     </div>
   )
 }
