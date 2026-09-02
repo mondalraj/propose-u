@@ -12,9 +12,7 @@
   },
 
   "contact": {
-    "whatsappNumber": "8801XXXXXXXXX",
-    "smsNumber": "+8801XXXXXXXXX",
-    "email": "you@example.com"
+    "whatsappNumber": "919958164563"
   },
 
   "landing": {
@@ -142,10 +140,7 @@
   "send": {
     "heading": "Seal the deal 📝",
     "messageTemplate": "It's a YES! 💖 See you on {{day}}, {{vibe}}. Can't wait! — {{herName}}",
-    "sendLabel": "Send via WhatsApp 💌",
-    "smsLabel": "or send via SMS",
-    "copyLabel": "or copy the message",
-    "copiedToast": "Copied! Now go press send 😌"
+    "sendLabel": "Send via WhatsApp 💌"
   },
 
   "finale": {

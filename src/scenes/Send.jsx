@@ -1,13 +1,11 @@
-import { useState } from 'react'
 import { motion } from 'motion/react'
 import { data, t } from '../lib/data.js'
-import { GhostButton, PrimaryButton, Card, spring } from '../components/ui.jsx'
+import { PrimaryButton, Card, spring } from '../components/ui.jsx'
 
-/** S7 — Confirm & send via WhatsApp deep link (SMS + copy fallbacks). */
+/** S7 — Confirm & send via WhatsApp deep link (the one and only action). */
 export default function Send({ choice, onNext }) {
   const cfg = data.send
   const contact = data.contact
-  const [toast, setToast] = useState(null)
 
   const day = choice?.day || 'our date'
   const vibe = choice?.vibe || 'a surprise'
@@ -15,21 +13,6 @@ export default function Send({ choice, onNext }) {
 
   const waNumber = (contact.whatsappNumber || '').replace(/[^\d]/g, '')
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`
-  const smsUrl = `sms:${contact.smsNumber || ''}${contact.smsNumber?.includes('?') ? '&' : '?'}body=${encodeURIComponent(message)}`
-
-  const showToast = (msg) => {
-    setToast(msg)
-    setTimeout(() => setToast(null), 2600)
-  }
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(message)
-      showToast(t(cfg.copiedToast))
-    } catch {
-      showToast('Copy not available — select the message text 💛')
-    }
-  }
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-16 text-center">
@@ -56,30 +39,16 @@ export default function Send({ choice, onNext }) {
         </Card>
       </motion.div>
 
-      <div className="mt-10 flex flex-col items-center gap-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="mt-10"
+      >
         <PrimaryButton onClick={() => { window.open(waUrl, '_blank', 'noopener'); onNext() }}>
           {t(cfg.sendLabel)}
         </PrimaryButton>
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          <GhostButton onClick={() => { window.open(smsUrl, '_self'); onNext() }} className="text-sm md:text-base">
-            {t(cfg.smsLabel)}
-          </GhostButton>
-          <GhostButton onClick={copy} className="text-sm md:text-base">
-            {t(cfg.copyLabel)}
-          </GhostButton>
-        </div>
-      </div>
-
-      {toast && (
-        <motion.div
-          role="status"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 rounded-full border border-gold/40 bg-night-card px-6 py-3 text-gold shadow-xl"
-        >
-          {toast}
-        </motion.div>
-      )}
+      </motion.div>
     </div>
   )
 }
