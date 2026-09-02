@@ -45,7 +45,7 @@ export default function Quiz({ onNext, onQuizAnswer }) {
       setReaction(null)
       if (qi < questions.length - 1) setQi(qi + 1)
       else onNext()
-    }, 1400)
+    }, 4500)
   }
 
   return (

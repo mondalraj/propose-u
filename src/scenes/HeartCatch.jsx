@@ -20,8 +20,6 @@ export default function HeartCatch({ onNext }) {
   const doneRef = useRef(false)
 
   const target = Math.max(3, cfg.targetHearts || 8)
-  const duration = Math.max(5, cfg.durationSeconds || 15)
-  const [timeLeft, setTimeLeft] = useState(duration)
 
   const finish = () => {
     if (doneRef.current) return
@@ -40,26 +38,8 @@ export default function HeartCatch({ onNext }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Countdown — time's up still unlocks (anti-stuck).
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    const id = setInterval(() => {
-      if (doneRef.current) {
-        clearInterval(id)
-        return
-      }
-      setTimeLeft((t) => {
-        if (t <= 1) {
-          clearInterval(id)
-          finish()
-          return 0
-        }
-        return t - 1
-      })
-    }, 1000)
-    return () => clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // No countdown by design: the letter only opens once every heart is caught.
+  // Hearts keep drifting in for as long as it takes — earned, not given.
 
   useHeartsGame({ canvasRef, poppedRef, doneRef, setPopped, add, target, finish })
 
@@ -86,7 +66,9 @@ export default function HeartCatch({ onNext }) {
         <span className="w-16 text-sm text-mauve tabular-nums md:text-base" aria-live="polite">
           {popped}/{target} 💗
         </span>
-        <span className="w-12 text-sm text-mauve/80 tabular-nums md:text-base">{timeLeft}s</span>
+        <span className="w-24 text-sm text-mauve tabular-nums md:text-base" aria-live="polite">
+          {Math.max(0, target - popped)} left ✨
+        </span>
       </div>
 
       <div className="relative mt-8 w-full max-w-3xl">

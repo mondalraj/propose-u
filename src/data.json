@@ -54,7 +54,6 @@
     "heartCatch": {
       "enabled": true,
       "title": "Catch the hearts to unlock your letter",
-      "durationSeconds": 15,
       "targetHearts": 8,
       "unlockText": "Letter unlocked! Opening… 💌",
       "skipText": "Skip — just open it ✨"
@@ -67,25 +66,25 @@
         {
           "q": "Who is the better cook between us two?",
           "options": [
-            { "text": "Me, obviously", "reaction": "Confidence looks good on you, chef 👩‍🍳" },
-            { "text": "You, obviously", "reaction": "Then I'll be tasting everything you make 😌" },
-            { "text": "The delivery app", "reaction": "Honest. I respect it. We're ordering together then 🍜" }
+            { "text": "Me, obviously", "reaction": "Then I get to be your taste-tester for life 😌" },
+            { "text": "You, obviously", "reaction": "Then I'll happily spend my mornings just watching you cook ☕" },
+            { "text": "The delivery app", "reaction": "Doesn't matter who cooks — it's you I'm hungry for 😏" }
           ]
         },
         {
           "q": "What's our ideal date energy?",
           "options": [
-            { "text": "Cozy & quiet", "reaction": "A quiet corner with you — my favorite plan already ☕" },
-            { "text": "Adventure mode", "reaction": "Deal. I'll plan it, you just hold my hand 🧭" },
-            { "text": "Food marathon", "reaction": "Finally, someone who takes food as seriously as I do 🥟" }
+            { "text": "Cozy & quiet", "reaction": "Just us, no noise, nowhere to be. That's my favorite place 🕯️" },
+            { "text": "Adventure mode", "reaction": "Anywhere becomes an adventure the moment you're beside me 🌙" },
+            { "text": "Food marathon", "reaction": "Long tables, slow evenings, and you sitting across from me 🍷" }
           ]
         },
         {
           "q": "How much do you like me?",
           "options": [
-            { "text": "A lot", "reaction": "Only a lot? Clearly I need to try harder 😏" },
-            { "text": "A LOT lot", "reaction": "Correct answer. There were no wrong ones — still, correct 💘" },
-            { "text": "Infinity + 1", "reaction": "And I like you infinity + 2. It's officially a problem 💞" }
+            { "text": "A lot", "reaction": "A lot is a beautiful start… I plan on becoming your favorite habit 😉" },
+            { "text": "A LOT lot", "reaction": "Careful — say things like that and I'll never let you go 💘" },
+            { "text": "Infinity + 1", "reaction": "Then we're even. You've had my heart since before I even knew it 💞" }
           ]
         }
       ]
