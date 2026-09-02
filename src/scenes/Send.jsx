@@ -34,12 +34,16 @@ export default function Send({ choice, quizAnswers, onNext }) {
       bookedAt: new Date().toISOString(),
     }
     try {
-      await fetch('/api/notify', {
+      const r = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(booking),
       })
-    } catch {
+      // Visible in the browser console — handy while testing the pipeline.
+      const result = await r.json().catch(() => null)
+      console.log('[booking] /api/notify →', result)
+    } catch (e) {
+      console.warn('[booking] notify request failed:', String(e))
       // ignore — delivery issues must never surface to her
     }
     setStatus('done')
