@@ -12,7 +12,7 @@
   },
 
   "notify": {
-    "note": "Bookings are delivered via /api/notify — see README. Configure TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (and optionally GOOGLE_SHEET_WEBHOOK_URL) as Vercel environment variables."
+    "note": "Bookings are logged to your Google Sheet via /api/notify. See README — set GOOGLE_SHEET_WEBHOOK_URL as a Vercel environment variable."
   },
 
   "landing": {

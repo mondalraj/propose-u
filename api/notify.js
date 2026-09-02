@@ -1,9 +1,13 @@
-// Vercel serverless function — receives her booking and delivers it to you.
-// Configure env vars in Vercel (Project → Settings → Environment Variables):
-//   TELEGRAM_BOT_TOKEN        — from @BotFather (/newbot)
-//   TELEGRAM_CHAT_ID          — your chat id (see README)
-//   GOOGLE_SHEET_WEBHOOK_URL  — optional Apps Script webhook that logs a row
-// Secrets stay server-side; the client never sees them.
+// Vercel serverless function — receives her booking and logs it to your
+// Google Sheet via an Apps Script Web App webhook.
+//
+// Configure in Vercel (Project → Settings → Environment Variables):
+//   GOOGLE_SHEET_WEBHOOK_URL — the /exec URL from the Apps Script deployment
+//                              (full setup steps in README.md)
+//
+// Secrets stay server-side; the client never sees the sheet URL. This proxy
+// also avoids CORS: Apps Script web apps don't send CORS headers, but this
+// server-to-server call doesn't need them.
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -11,50 +15,34 @@ export default async function handler(req, res) {
     return
   }
 
-  let message = ''
+  let booking = null
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    message = String(body?.message || '')
+    booking = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
   } catch {
-    message = ''
+    booking = null
   }
-  if (!message || message.length > 4000) {
-    res.status(400).json({ ok: false, reason: 'bad-message' })
+  if (!booking || typeof booking !== 'object' || !booking.day || !booking.vibe) {
+    res.status(400).json({ ok: false, reason: 'bad-booking' })
     return
   }
 
-  const delivered = []
-
-  try {
-    // 1) Telegram — instant push to your phone.
-    const token = process.env.TELEGRAM_BOT_TOKEN
-    const chatId = process.env.TELEGRAM_CHAT_ID
-    if (token && chatId) {
-      const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: chatId, text: message }),
-      })
-      delivered.push(`telegram:${r.status}`)
-    }
-
-    // 2) Optional Google Sheet log (Apps Script webhook).
-    const sheetUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL
-    if (sheetUrl) {
-      const r = await fetch(sheetUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, at: new Date().toISOString() }),
-      })
-      delivered.push(`sheet:${r.status}`)
-    }
-  } catch {
-    // Network hiccups must never break her flow — swallow and report softly.
-  }
-
-  if (!delivered.length) {
+  const sheetUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL
+  if (!sheetUrl) {
+    // Not configured yet — her flow still continues gracefully on the client.
     res.status(200).json({ ok: false, reason: 'not-configured' })
     return
   }
-  res.status(200).json({ ok: true, delivered })
+
+  try {
+    const r = await fetch(sheetUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...booking, deliveredAt: new Date().toISOString() }),
+    })
+    res.status(200).json({ ok: r.ok })
+  } catch {
+    // Network hiccups must never break her flow — report softly.
+    res.status(200).json({ ok: false, reason: 'delivery-failed' })
+  }
 }
+

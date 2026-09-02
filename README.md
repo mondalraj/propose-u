@@ -24,17 +24,57 @@ All content lives in **`src/data.json`** — her name, reason cards, quiz questi
 
 ## Get her booking delivered to you (automatic!)
 
-When she taps **"Book our date 💖"**, the full recap (the question, her quiz answers, the day and vibe she chose) is POSTed to `/api/notify` — a Vercel serverless function that forwards it to you. Her flow never breaks, even if delivery fails.
+When she taps **"Book our date 💖"**, the full recap — the question she said yes to, every quiz answer, the day and vibe she chose, and a timestamp — is POSTed to `/api/notify` (a Vercel serverless function) which writes it as a **new row in your Google Sheet**. Her flow never breaks, even if delivery fails. No WhatsApp, no manual step.
 
-**Recommended: Telegram (2 minutes)**
-1. In Telegram, message **@BotFather** → `/newbot` → follow steps → copy the **bot token**
-2. Message your new bot once (press Start), then open `https://api.telegram.org/bot<TOKEN>/getUpdates` in your browser and copy the `chat.id` from the response
-3. In Vercel: *Project → Settings → Environment Variables* → add `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`
-4. Redeploy — every booking now lands in your Telegram instantly 📲
+**Setup — about 5 minutes, you only do this once:**
 
-**Optional: Google Sheet log**
-1. Create a Sheet → *Extensions → Apps Script* → paste a doPost script that appends `JSON.parse(e.postData.contents)` fields to the sheet → Deploy as **Web app** (access: "Anyone")
-2. Add the web-app URL as the `GOOGLE_SHEET_WEBHOOK_URL` env var in Vercel
+**Step 1 — Create the Google Sheet**
+1. Go to [sheets.new](https://sheets.new) and name it something like `Date Bookings 💘`
+2. (Optional) Rename "Sheet1" to `Bookings`
+
+**Step 2 — Add the Apps Script**
+1. In the sheet: **Extensions → Apps Script**
+2. Delete whatever is in `Code.gs` and paste this:
+
+```javascript
+function doPost(e) {
+  var data = JSON.parse(e.postData.contents)
+  var ss = SpreadsheetApp.getActiveSpreadsheet()
+  var sheet = ss.getSheetByName('Bookings') || ss.insertSheet('Bookings')
+
+  // Header row (only when the sheet is empty)
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['Booked at', 'Her name', 'The question', 'Quiz answers', 'Day', 'Vibe'])
+    sheet.getRange('A1:F1').setFontWeight('bold')
+  }
+
+  var quiz = (data.answers || [])
+    .map(function (a) { return '• ' + a.q + ' → ' + a.a })
+    .join('\n') || '(skipped)'
+
+  sheet.appendRow([data.bookedAt, data.herName, data.question, quiz, data.day, data.vibe])
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true }))
+    .setMimeType(ContentService.MimeType.JSON)
+}
+```
+
+3. Save (💾 icon), then click **Deploy → New deployment**
+4. Click the ⚙️ next to "Select type" → choose **Web app**
+5. Set: *Execute as* → **Me**, *Who has access* → **Anyone**
+6. Click **Deploy** → grant the permissions (it's your own script, accessing your own sheet)
+7. Copy the **Web app URL** — it looks like `https://script.google.com/macros/s/AKfycb.../exec`
+
+**Step 3 — Tell Vercel about it**
+1. Go to [vercel.com](https://vercel.com) → your `propose-u` project → **Settings → Environment Variables**
+2. Add: Name = `GOOGLE_SHEET_WEBHOOK_URL`, Value = the `/exec` URL you copied (Production + Preview)
+3. **Redeploy** the project (Deployments tab → ⋯ → Redeploy) — env vars only apply to new builds
+
+**Step 4 — Test it**
+Open your deployed site, click through to the booking, tap **"Book our date 💖"** — a new row appears in your sheet within a second or two. 💘
+
+> Note: keep the Web App URL private — anyone who has it can append rows to your sheet. It lives only in Vercel's server-side env vars, never in the website code.
 
 ## Deploy
 

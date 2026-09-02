@@ -23,14 +23,24 @@ export default function Send({ choice, quizAnswers, onNext }) {
     if (status !== 'idle') return
     setStatus('sending')
     // Fire-and-forget: whatever happens with the network, her flow never breaks.
+    const booking = {
+      herName: data.people.herName,
+      yourName: data.people.yourName,
+      question,
+      answers: quizAnswers || [],
+      day,
+      vibe,
+      message,
+      bookedAt: new Date().toISOString(),
+    }
     try {
       await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify(booking),
       })
     } catch {
-      // ignore — the recap also lives in her browser history if needed
+      // ignore — delivery issues must never surface to her
     }
     setStatus('done')
     setTimeout(onNext, 1800)
