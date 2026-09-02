@@ -1,0 +1,182 @@
+{
+  "meta": {
+    "title": "For You 💖",
+    "theme": "midnight",
+    "locale": "en"
+  },
+
+  "people": {
+    "herName": "Beautiful",
+    "yourName": "Rajib",
+    "coupleName": "R & B"
+  },
+
+  "contact": {
+    "whatsappNumber": "8801XXXXXXXXX",
+    "smsNumber": "+8801XXXXXXXXX",
+    "email": "you@example.com"
+  },
+
+  "landing": {
+    "greeting": "Hey {{herName}}…",
+    "subtitle": "Something is waiting for you. But first — a tiny mission.",
+    "cta": "Open it 💌",
+    "unlockGame": true
+  },
+
+  "reasons": {
+    "title": "Some things I should have said out loud…",
+    "items": [
+      {
+        "text": "Every time my phone lights up with your name, the day gets 10% better. Science calls it dopamine. I call it you.",
+        "photo": "",
+        "emoji": "✨"
+      },
+      {
+        "text": "You make ordinary Tuesdays feel like something worth remembering.",
+        "photo": "",
+        "emoji": "🌤"
+      },
+      {
+        "text": "Laughing with you is my favorite sound in any room.",
+        "photo": "",
+        "emoji": "😄"
+      },
+      {
+        "text": "I've run out of reasons to wait. So here I am, asking properly.",
+        "photo": "",
+        "emoji": "💌"
+      }
+    ]
+  },
+
+  "games": {
+    "enabled": true,
+
+    "heartCatch": {
+      "enabled": true,
+      "title": "Catch the hearts to unlock your letter",
+      "durationSeconds": 15,
+      "targetHearts": 8,
+      "unlockText": "Letter unlocked! Opening… 💌",
+      "skipText": "Skip — just open it ✨"
+    },
+
+    "quiz": {
+      "enabled": true,
+      "title": "How well do we match?",
+      "subtitle": "Spoiler: every answer is the right answer.",
+      "questions": [
+        {
+          "q": "Who is the better cook between us two?",
+          "options": ["Me, obviously", "You, obviously", "The delivery app"],
+          "reaction": "Correct! We're a perfect team. 🍳"
+        },
+        {
+          "q": "What's our ideal date energy?",
+          "options": ["Cozy & quiet", "Adventure mode", "Food marathon"],
+          "reaction": "Exactly my thought. Great minds. 💭"
+        },
+        {
+          "q": "How much do you like me?",
+          "options": ["A lot", "A LOT lot", "Infinity + 1"],
+          "reaction": "Same. That's why this next part matters… 💘"
+        }
+      ]
+    },
+
+    "scratchCard": {
+      "enabled": true,
+      "title": "One more thing… scratch to reveal",
+      "foilColor": "#F3C77B",
+      "hiddenText": "{{herName}}, will you go on a date with me?"
+    },
+
+    "surpriseWheel": {
+      "enabled": true,
+      "segments": ["Coffee & a walk ☕", "Dinner date 🍽", "Movie night 🎬", "Long drive 🚗", "Stargazing ✨", "You decide 😉"]
+    },
+
+    "loveMeter": {
+      "enabled": true,
+      "label": "Love-o-meter",
+      "milestones": ["💗", "💖", "💘"]
+    },
+
+    "badge": {
+      "title": "Certified Cutie",
+      "subtitle": "Admit One · Non-refundable · Forever"
+    }
+  },
+
+  "question": {
+    "line": "{{herName}}, will you go on a date with me?",
+    "yesLabel": "Yes 💖",
+    "noLabel": "No",
+    "maxDodgeAttempts": 5,
+    "noLoopCaptions": [
+      "Are you sure?",
+      "Really really sure?",
+      "Think again 🥺",
+      "The button seems broken 😅",
+      "Okay, the universe has voted. It said YES."
+    ],
+    "giveUpLine": "No worries 😊 (the Yes button will be here, glowing, forever)"
+  },
+
+  "celebration": {
+    "headline": "I knew it 😍",
+    "note": "Best. Decision. Ever. Now let's make it official…"
+  },
+
+  "planner": {
+    "heading": "Now the important part — when do I get to see you?",
+    "dayLabel": "Pick a day",
+    "dayOptions": ["This Saturday", "Next Friday", "Surprise me 🎡"],
+    "vibeLabel": "Pick a vibe",
+    "vibeOptions": ["Coffee & a walk ☕", "Dinner 🍽", "Movie night 🎬", "You decide 😉"],
+    "confirmLabel": "Sounds perfect 💖",
+    "skipLabel": "Keep it a surprise"
+  },
+
+  "send": {
+    "heading": "Seal the deal 📝",
+    "messageTemplate": "It's a YES! 💖 See you on {{day}}, {{vibe}}. Can't wait! — {{herName}}",
+    "sendLabel": "Send via WhatsApp 💌",
+    "smsLabel": "or send via SMS",
+    "copyLabel": "or copy the message",
+    "copiedToast": "Copied! Now go press send 😌"
+  },
+
+  "finale": {
+    "title": "See you soon 🥰",
+    "letter": [
+      "Thank you for saying yes before I even finished being nervous.",
+      "I promise the date will be worth every heart you caught today.",
+      "And if you tap the heart below three times… well, see for yourself."
+    ],
+    "signature": "— Yours, {{yourName}}",
+    "easterEgg": {
+      "taps": 3,
+      "message": "You found it. Bonus date unlocked. 😌💘"
+    }
+  },
+
+  "effects": {
+    "floatingHearts": true,
+    "cursorTrail": true,
+    "cardTilt": true,
+    "backgroundMusic": {
+      "enabled": false,
+      "url": ""
+    }
+  },
+
+  "scheduling": {
+    "gate": {
+      "enabled": false,
+      "date": "2026-09-14",
+      "teaser": "It's not time yet 😉 — come back on {{date}}."
+    }
+  }
+}
