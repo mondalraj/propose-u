@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { AnimatePresence } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { data, t } from '../lib/data.js'
 import { useLoveMeter } from '../components/LoveMeter.jsx'
 import SurpriseWheel from '../components/SurpriseWheel.jsx'
-import { Chip, GhostButton, PrimaryButton } from '../components/ui.jsx'
+import { Chip, PrimaryButton } from '../components/ui.jsx'
 import { microBurst } from '../lib/confetti.js'
 
-/** S6 — Date planner: day chips + vibe chips + G4 Surprise Wheel. */
+/** S6 — Date planner: real day chips + vibe chips, with the wheel living in "Surprise me 🎡". */
 export default function Planner({ onNext }) {
   const cfg = data.planner
   const wheelCfg = data.games.surpriseWheel
@@ -14,24 +14,25 @@ export default function Planner({ onNext }) {
   const [day, setDay] = useState(null)
   const [vibe, setVibe] = useState(null)
   const [wheelOpen, setWheelOpen] = useState(false)
+  const [wheelResult, setWheelResult] = useState(null)
 
-  const surpriseDay = cfg.dayOptions?.find((d) => d.includes('Surprise') || d.includes('🎡'))
+  const surpriseVibe = cfg.vibeOptions?.find((v) => v.includes('Surprise') || v.includes('🎡'))
   const ready = Boolean(day) && Boolean(vibe)
 
   const selectDay = (d) => {
     setDay(d)
-    if (surpriseDay && d === surpriseDay && wheelCfg?.enabled) {
-      setWheelOpen(true)
-      setVibe(null)
-    } else {
-      setWheelOpen(false)
-    }
     add(6)
   }
 
   const selectVibe = (v) => {
-    setVibe(v)
-    setWheelOpen(false)
+    if (surpriseVibe && v === surpriseVibe && wheelCfg?.enabled) {
+      // "Surprise me" spins the wheel — the outcome becomes her vibe.
+      setWheelOpen(true)
+      microBurst(0.5, 0.7)
+    } else {
+      setWheelOpen(false)
+      setVibe(v)
+    }
     add(6)
   }
 
@@ -64,6 +65,8 @@ export default function Planner({ onNext }) {
             segments={wheelCfg.segments}
             onResult={(seg) => {
               setVibe(seg)
+              setWheelResult(seg)
+              setWheelOpen(false)
               add(8)
             }}
           />
@@ -74,18 +77,31 @@ export default function Planner({ onNext }) {
         <p className="mb-4 text-sm uppercase tracking-[0.25em] text-mauve/70">{t(cfg.vibeLabel)}</p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           {cfg.vibeOptions?.map((v) => (
-            <Chip key={v} selected={vibe === v} onClick={() => selectVibe(v)}>
+            <Chip
+              key={v}
+              selected={vibe === v || (surpriseVibe && wheelResult && v === surpriseVibe)}
+              onClick={() => selectVibe(v)}
+            >
               {t(v)}
             </Chip>
           ))}
         </div>
+        {wheelResult && (
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 font-display text-lg italic text-gold md:text-xl"
+            aria-live="polite"
+          >
+            🎡 The wheel has spoken — {wheelResult}
+          </motion.p>
+        )}
       </div>
 
-      <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
+      <div className="mt-14">
         <PrimaryButton onClick={confirm} disabled={!ready}>
           {t(cfg.confirmLabel)}
         </PrimaryButton>
-        <GhostButton onClick={onNext}>{t(cfg.skipLabel)}</GhostButton>
       </div>
     </div>
   )

@@ -11,21 +11,25 @@ export default function SurpriseWheel({ segments, onResult }) {
   const [result, setResult] = useState(null)
   const controls = useAnimationControls()
 
-  const spin = async () => {
+  const spin = () => {
     if (spinning || !segments?.length) return
     setSpinning(true)
-    const segs = segments
-    const idx = Math.floor(Math.random() * segs.length)
-    const segAngle = 360 / segs.length
+    const idx = Math.floor(Math.random() * segments.length)
+    const segAngle = 360 / segments.length
     const target = 360 * 5 + (360 - idx * segAngle - segAngle / 2)
-    await controls.start({
+    // Visual spin — but never await the animation promise: background tabs
+    // throttle rAF and would leave the flow stuck on "Spinning…" forever.
+    controls.start({
       rotate: target,
       transition: { duration: 3.2, ease: [0.15, 0.9, 0.25, 1] },
     })
-    setSpinning(false)
-    setResult(segs[idx])
-    microBurst(0.5, 0.55, 24)
-    onResult(segs[idx])
+    // Guaranteed resolution, whatever the animation engine is doing.
+    setTimeout(() => {
+      setSpinning(false)
+      setResult(segments[idx])
+      microBurst(0.5, 0.55, 24)
+      onResult(segments[idx])
+    }, 3400)
   }
 
   return (

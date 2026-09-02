@@ -1,16 +1,17 @@
+import { useState } from 'react'
 import { motion } from 'motion/react'
 import { data, t } from '../lib/data.js'
 import { PrimaryButton, Card, spring } from '../components/ui.jsx'
 
-/** S7 — Confirm & send via WhatsApp deep link (the one and only action). */
+/** S7 — She books the date; the recap is delivered to you automatically via /api/notify. */
 export default function Send({ choice, quizAnswers, onNext }) {
   const cfg = data.send
-  const contact = data.contact
+  const [status, setStatus] = useState('idle') // idle | sending | done
 
   const day = choice?.day || 'a surprise'
   const vibe = choice?.vibe || 'a surprise'
 
-  // Full journey recap for the pre-filled WhatsApp message.
+  // Full journey recap that gets delivered to you.
   const question = t(data.question.line)
   const quizText =
     quizAnswers?.length
@@ -18,8 +19,29 @@ export default function Send({ choice, quizAnswers, onNext }) {
       : '(skipped it — went straight to the yes 😌)'
   const message = t(cfg.messageTemplate, { question, quiz: quizText, day, vibe })
 
-  const waNumber = (contact.whatsappNumber || '').replace(/[^\d]/g, '')
-  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`
+  const book = async () => {
+    if (status !== 'idle') return
+    setStatus('sending')
+    // Fire-and-forget: whatever happens with the network, her flow never breaks.
+    try {
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      })
+    } catch {
+      // ignore — the recap also lives in her browser history if needed
+    }
+    setStatus('done')
+    setTimeout(onNext, 1800)
+  }
+
+  const label =
+    status === 'sending'
+      ? t(cfg.sendingLabel || 'Booking it… 💞')
+      : status === 'done'
+        ? t(cfg.bookedLabel || "It's official! 💖")
+        : t(cfg.sendLabel)
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-16 text-center">
@@ -52,10 +74,20 @@ export default function Send({ choice, quizAnswers, onNext }) {
         transition={{ delay: 0.5 }}
         className="mt-10"
       >
-        <PrimaryButton onClick={() => { window.open(waUrl, '_blank', 'noopener'); onNext() }}>
-          {t(cfg.sendLabel)}
+        <PrimaryButton onClick={book} disabled={status === 'sending'}>
+          {label}
         </PrimaryButton>
       </motion.div>
+
+      {status === 'done' && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-6 text-sm text-mauve"
+        >
+          He just found out. 🤭
+        </motion.p>
+      )}
     </div>
   )
 }

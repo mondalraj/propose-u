@@ -11,8 +11,8 @@
     "coupleName": "R & L"
   },
 
-  "contact": {
-    "whatsappNumber": "919958164563"
+  "notify": {
+    "note": "Bookings are delivered via /api/notify — see README. Configure TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (and optionally GOOGLE_SHEET_WEBHOOK_URL) as Vercel environment variables."
   },
 
   "landing": {
@@ -136,17 +136,18 @@
   "planner": {
     "heading": "Now the important part — when do I get to see you?",
     "dayLabel": "Pick a day",
-    "dayOptions": ["This Saturday", "Next Friday", "Surprise me 🎡"],
+    "dayOptions": ["This Saturday", "Next Friday", "Next Sunday"],
     "vibeLabel": "Pick a vibe",
-    "vibeOptions": ["Coffee & a walk ☕", "Dinner 🍽", "Movie night 🎬", "You decide 😉"],
-    "confirmLabel": "Sounds perfect 💖",
-    "skipLabel": "Keep it a surprise"
+    "vibeOptions": ["Coffee & a walk ☕", "Dinner 🍽", "Movie night 🎬", "You decide 😉", "Surprise me 🎡"],
+    "confirmLabel": "Sounds perfect 💖"
   },
 
   "send": {
     "heading": "Seal the deal 📝",
     "messageTemplate": "It's a YES! 💖\n\n\"{{question}}\"\n→ YES, obviously 😌\n\nOur match quiz 💘\n{{quiz}}\n\nOur date 📅\nWhen: {{day}}\nVibe: {{vibe}}\n\nCan't wait! — {{herName}}",
-    "sendLabel": "Send via WhatsApp 💌"
+    "sendLabel": "Book our date 💖",
+    "sendingLabel": "Booking it… 💞",
+    "bookedLabel": "It's official! 💖"
   },
 
   "finale": {
