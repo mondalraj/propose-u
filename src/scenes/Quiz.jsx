@@ -6,7 +6,7 @@ import { PrimaryButton, RevealWords, spring } from '../components/ui.jsx'
 import { microBurst } from '../lib/confetti.js'
 
 /** G2 — "How well do we match?" Every answer is a winning answer. */
-export default function Quiz({ onNext }) {
+export default function Quiz({ onNext, onQuizAnswer }) {
   const cfg = data.games.quiz
   const questions = cfg.questions?.length ? cfg.questions : []
   const { add } = useLoveMeter()
@@ -33,6 +33,7 @@ export default function Quiz({ onNext }) {
     if (locked) return
     setLocked(true)
     setReaction(option.reaction || q.reaction || 'Correct! 💘')
+    onQuizAnswer?.({ q: t(q.q), a: t(option.text) })
     add(10)
     const r = e.currentTarget.getBoundingClientRect()
     microBurst(

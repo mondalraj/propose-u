@@ -147,7 +147,7 @@
 
   "send": {
     "heading": "Seal the deal 📝",
-    "messageTemplate": "It's a YES! 💖 See you on {{day}}, {{vibe}}. Can't wait! — {{herName}}",
+    "messageTemplate": "It's a YES! 💖\n\n\"{{question}}\"\n→ YES, obviously 😌\n\nOur match quiz 💘\n{{quiz}}\n\nOur date 📅\nWhen: {{day}}\nVibe: {{vibe}}\n\nCan't wait! — {{herName}}",
     "sendLabel": "Send via WhatsApp 💌"
   },
 

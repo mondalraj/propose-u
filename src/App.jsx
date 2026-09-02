@@ -37,6 +37,9 @@ export default function App() {
   const scenes = useMemo(buildScenes, [])
   const [index, setIndex] = useState(0)
   const [choice, setChoice] = useState({ day: null, vibe: null })
+  const [quizAnswers, setQuizAnswers] = useState([])
+
+  const addQuizAnswer = useCallback((a) => setQuizAnswers((list) => [...list, a]), [])
 
   const goTo = useCallback(
     (i) => setIndex(Math.max(0, Math.min(scenes.length - 1, i))),
@@ -100,7 +103,14 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 220, damping: 24 }}
         >
-          {Scene ? <Scene onNext={next} choice={choice} /> : null}
+          {Scene ? (
+            <Scene
+              onNext={next}
+              choice={choice}
+              quizAnswers={quizAnswers}
+              onQuizAnswer={addQuizAnswer}
+            />
+          ) : null}
         </motion.div>
       </main>
     </LoveMeterProvider>

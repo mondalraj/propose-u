@@ -3,13 +3,20 @@ import { data, t } from '../lib/data.js'
 import { PrimaryButton, Card, spring } from '../components/ui.jsx'
 
 /** S7 — Confirm & send via WhatsApp deep link (the one and only action). */
-export default function Send({ choice, onNext }) {
+export default function Send({ choice, quizAnswers, onNext }) {
   const cfg = data.send
   const contact = data.contact
 
-  const day = choice?.day || 'our date'
+  const day = choice?.day || 'a surprise'
   const vibe = choice?.vibe || 'a surprise'
-  const message = t(cfg.messageTemplate, { day, vibe })
+
+  // Full journey recap for the pre-filled WhatsApp message.
+  const question = t(data.question.line)
+  const quizText =
+    quizAnswers?.length
+      ? quizAnswers.map((a) => `• ${a.q} → ${a.a}`).join('\n')
+      : '(skipped it — went straight to the yes 😌)'
+  const message = t(cfg.messageTemplate, { question, quiz: quizText, day, vibe })
 
   const waNumber = (contact.whatsappNumber || '').replace(/[^\d]/g, '')
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`
@@ -33,7 +40,7 @@ export default function Send({ choice, onNext }) {
               💫 {vibe}
             </span>
           </div>
-          <p className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5 font-display text-xl italic leading-relaxed text-cream md:text-2xl">
+          <p className="mt-6 whitespace-pre-line rounded-2xl border border-white/10 bg-white/5 p-5 text-left font-display text-lg italic leading-relaxed text-cream md:text-xl">
             {message}
           </p>
         </Card>

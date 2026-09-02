@@ -38,7 +38,7 @@ export default function Planner({ onNext }) {
   const confirm = () => {
     microBurst(0.5, 0.6, 24)
     add(10)
-    onNext()
+    onNext({ day, vibe })
   }
 
   return (
