@@ -6,7 +6,7 @@
   },
 
   "people": {
-    "herName": "Beautiful",
+    "herName": "Love",
     "yourName": "Rajib",
     "coupleName": "R & B"
   },
@@ -63,22 +63,30 @@
     "quiz": {
       "enabled": true,
       "title": "How well do we match?",
-      "subtitle": "Spoiler: every answer is the right answer.",
       "questions": [
         {
           "q": "Who is the better cook between us two?",
-          "options": ["Me, obviously", "You, obviously", "The delivery app"],
-          "reaction": "Correct! We're a perfect team. 🍳"
+          "options": [
+            { "text": "Me, obviously", "reaction": "Confidence looks good on you, chef 👩‍🍳" },
+            { "text": "You, obviously", "reaction": "Then I'll be tasting everything you make 😌" },
+            { "text": "The delivery app", "reaction": "Honest. I respect it. We're ordering together then 🍜" }
+          ]
         },
         {
           "q": "What's our ideal date energy?",
-          "options": ["Cozy & quiet", "Adventure mode", "Food marathon"],
-          "reaction": "Exactly my thought. Great minds. 💭"
+          "options": [
+            { "text": "Cozy & quiet", "reaction": "A quiet corner with you — my favorite plan already ☕" },
+            { "text": "Adventure mode", "reaction": "Deal. I'll plan it, you just hold my hand 🧭" },
+            { "text": "Food marathon", "reaction": "Finally, someone who takes food as seriously as I do 🥟" }
+          ]
         },
         {
           "q": "How much do you like me?",
-          "options": ["A lot", "A LOT lot", "Infinity + 1"],
-          "reaction": "Same. That's why this next part matters… 💘"
+          "options": [
+            { "text": "A lot", "reaction": "Only a lot? Clearly I need to try harder 😏" },
+            { "text": "A LOT lot", "reaction": "Correct answer. There were no wrong ones — still, correct 💘" },
+            { "text": "Infinity + 1", "reaction": "And I like you infinity + 2. It's officially a problem 💞" }
+          ]
         }
       ]
     },

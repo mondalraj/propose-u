@@ -7,7 +7,7 @@ import raw from '../data.json'
 
 const defaults = {
   meta: { title: 'For You 💖', theme: 'midnight', locale: 'en' },
-  people: { herName: 'Beautiful', yourName: 'Me', coupleName: 'Us' },
+  people: { herName: 'Love', yourName: 'Me', coupleName: 'Us' },
   contact: { whatsappNumber: '', smsNumber: '', email: '' },
   landing: {
     greeting: 'Hey {{herName}}…',
@@ -32,7 +32,6 @@ const defaults = {
     quiz: {
       enabled: true,
       title: 'How well do we match?',
-      subtitle: 'Spoiler: every answer is the right answer.',
       questions: [],
     },
     scratchCard: {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'motion/react'
 import { data, t } from '../lib/data.js'
 import { useLoveMeter } from '../components/LoveMeter.jsx'
-import { PrimaryButton, RevealWords, SkipButton, spring } from '../components/ui.jsx'
+import { PrimaryButton, RevealWords, spring } from '../components/ui.jsx'
 import { microBurst } from '../lib/confetti.js'
 
 /** G2 — "How well do we match?" Every answer is a winning answer. */
@@ -23,11 +23,16 @@ export default function Quiz({ onNext }) {
   }
 
   const q = questions[qi]
+  // Options may be plain strings (reaction falls back to q.reaction) or
+  // { text, reaction } objects for a personalized reply per answer.
+  const opts = (q.options || []).map((o) =>
+    typeof o === 'string' ? { text: o, reaction: q.reaction } : o,
+  )
 
-  const pick = (optIdx, e) => {
+  const pick = (option, e) => {
     if (locked) return
     setLocked(true)
-    setReaction(q.reaction || 'Correct! 💘')
+    setReaction(option.reaction || q.reaction || 'Correct! 💘')
     add(10)
     const r = e.currentTarget.getBoundingClientRect()
     microBurst(
@@ -83,25 +88,23 @@ export default function Quiz({ onNext }) {
           >
               <h2 className="text-xl font-medium text-cream md:text-2xl">{t(q.q)}</h2>
               <div className="mt-8 flex flex-col items-center gap-4">
-                {q.options?.map((opt, oi) => (
+                {opts.map((opt, oi) => (
                   <motion.button
                     key={oi}
                     type="button"
-                    onClick={(e) => pick(oi, e)}
+                    onClick={(e) => pick(opt, e)}
                     disabled={locked}
                     whileHover={{ scale: 1.03, x: 4 }}
                     whileTap={{ scale: 0.96 }}
                     className="w-full max-w-sm cursor-pointer rounded-2xl border border-white/15 bg-white/5 px-6 py-4 text-left text-lg text-mauve transition-colors hover:border-rose/50 hover:bg-rose/10 hover:text-cream"
                   >
-                    {t(opt)}
+                    {t(opt.text)}
                   </motion.button>
                 ))}
               </div>
             </motion.div>
           )}
       </div>
-
-      <SkipButton onClick={onNext} />
     </div>
   )
 }
